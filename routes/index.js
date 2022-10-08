@@ -23,6 +23,7 @@ router.get('/words/:theme', function(req, res, next) {
       break;
     default:
       res.send(JSON.stringify({response:"Theme not found"}))
+      break;
   }
 })
 
