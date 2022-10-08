@@ -7,20 +7,22 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/words', function(req, res, next) {
-  res.send('respond with a resource');
+  res.send(JSON.stringify({response: "respond with a resource"}));
 });
 
 router.get('/words/:theme', function(req, res, next) {
   switch(req.params.theme){
-    case "animal":
-      res.send(JSON.stringify({response:"animal"}));
+    case "animals":
+      res.send(JSON.stringify({response:"animals"}));
       break;
-    case "plant":
-      res.send(JSON.stringify({response:"plant"}));
+    case "plants":
+      res.send(JSON.stringify({response:"plants"}));
       break;
-    case "insect":
-      res.send(JSON.stringify({response:"insect"}));
+    case "insects":
+      res.send(JSON.stringify({response:"insects"}));
       break;
+    default:
+      res.send(JSON.stringify({response:"Theme not found"}))
   }
 })
 
