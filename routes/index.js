@@ -27,4 +27,10 @@ router.get('/words/:theme', function(req, res, next) {
   }
 })
 
+router.post('/score/:theme', function(req, res, next) {
+  res.status('500')
+  var obj = {msg: "Success!"}
+  res.send(JSON.stringify(obj))
+})
+
 module.exports = router;
