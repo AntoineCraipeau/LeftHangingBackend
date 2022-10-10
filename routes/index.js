@@ -97,7 +97,6 @@ router.get('/pscore/:theme', function(req, res, next) {
 /* Post new user to database */
 router.post('/register', function(req, res, next){
   var email = req.body.email; 
-  console.log(email);
   //Create reusable transporter 
   let transporter = nodemailer.createTransport({
     service: "gmail",
