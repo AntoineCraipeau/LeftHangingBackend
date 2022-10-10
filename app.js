@@ -19,6 +19,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.listen(3001, () => {
+  console.log("Example app listening at port 3001!");
+})
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
