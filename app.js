@@ -28,6 +28,7 @@ app.use(cors({
 }));
 
 app.listen(3001, () => {
+  
   console.log("Example app listening at port 3001!");
   var connection = mysql.createConnection({
     host     : "wordpanic-database-1.cnmskxwcoqjq.us-east-2.rds.amazonaws.com",
@@ -42,10 +43,16 @@ app.listen(3001, () => {
       return;
     }
 
-    console.log('Connected to database.');
-});
+  console.log('Connected to database.');
+  });
 
-connection.end;
+
+  connection.query('SELECT * FROM users', function(err, rows, fields) {
+    if (err) throw err;
+    console.log('The solution is: ', rows[0].solution);
+  });
+
+  connection.end;
 })
 
 app.use('/', indexRouter);
