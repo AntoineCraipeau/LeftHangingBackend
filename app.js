@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var mysql = require('mysql');
+
 var cors = require('cors')
 
 var indexRouter = require('./routes/index');
@@ -27,6 +29,23 @@ app.use(cors({
 
 app.listen(3001, () => {
   console.log("Example app listening at port 3001!");
+  var connection = mysql.createConnection({
+    host     : "wordpanic-database-1.cnmskxwcoqjq.us-east-2.rds.amazonaws.com",
+    user     : "admin",
+    password : "wordpanicdatabasepassword2002",
+    port     : 3306
+  });
+
+  connection.connect(function(err) {
+    if (err) {
+      console.error('Database connection failed: ' + err.stack);
+      return;
+    }
+
+    console.log('Connected to database.');
+});
+
+connection.end;
 })
 
 app.use('/', indexRouter);

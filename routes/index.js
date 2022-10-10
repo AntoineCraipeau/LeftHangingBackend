@@ -2,34 +2,7 @@ var express = require('express');
 const nodemailer = require('nodemailer');
 var router = express.Router();
 
-/*
-//Create reusable transporter 
-let transporter = nodemailer.createTransport({
-  service: "gmail",
-  secure:true,
-  auth: {
-      user: "wordpanic@gmail.com",
-      pass: "diykfziehqyeibio"
-  }
-});
-// Message object
-let message = {
-  from: 'wordpanic@gmail.com',
-  to: "tomatasong@gmail.com",
-  subject: 'Test',
-  text: 'Hello to myself!',
-};
 
-// send mail with defined transport object
-transporter.sendMail(message, function(err, success){
-  if(err){
-    console.log(err);
-  }
-  else{
-    console.log("Email Sent!")
-  }
-})
-*/
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -91,12 +64,33 @@ router.get('/pscore/:theme', function(req, res, next) {
   res.send(JSON.stringify(obj))
 })
 
+/* Verification of the account with the database */
+router.post('/login', function(req, res, next){
+  /* Get value from FrontEnd*/
+  var email = req.body.email;
+  var password = req.body.password;
+
+  /* Get value from Database*/
 
 
+  /* Connexion access */
+  var connexion = true;
+  if(connexion){
+    res.status('200')
+    res.send({msg:"login successfull"})
+  }
+  else{
+    res.status('200')
+    res.send({msg:"login failed"})
+  }
+})
 
-/* Post new user to database */
+
+/* Post new user to database and send confirmation mail */
 router.post('/register', function(req, res, next){
   var email = req.body.email; 
+  var username = req.body.username;
+  var password = req.body.password;
   //Create reusable transporter 
   let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -110,8 +104,9 @@ router.post('/register', function(req, res, next){
   let message = {
     from: 'wordpanic@gmail.com',
     to: email,
-    subject: 'Test',
-    text: 'Hello to myself!',
+    subject: 'Confirmation of Account creation',
+    text: 'Hi ' + username +",",
+    html:'Hi '+ username + ',' + '<br><p>Thanks again for creating an account on WordPanic.</p> <p>Follow this link to begin your WordPanic adventure!'
   };
 
   // send mail with defined transport object
@@ -128,5 +123,7 @@ router.post('/register', function(req, res, next){
   res.send({success:"account created"})
 
 })
+
+
 
 module.exports = router;
