@@ -57,6 +57,8 @@ router.get('/words/:theme', function(req, res, next) {
   }
 })
 
+
+
 /* Post Score to database */
 router.post('/score/:theme', function(req, res, next) {
   /* Sucess status */
@@ -70,6 +72,25 @@ router.post('/score/:theme', function(req, res, next) {
   /* Re-send to front-end (for test)*/
   res.send(JSON.stringify(obj))
 })
+
+router.get('/score/:theme', function(req, res, next) {
+  res.status('200')
+  var theme = res.paramstheme
+  /* I let Thomas find a way to pull this from the DB*/
+  var obj = [{id: 1, owner: 'Leowenex', score: 5},{id: 2, owner: 'Totopoiuytreza', score: 3}]
+  res.send(JSON.stringify(obj))
+})
+
+router.get('/pscore/:theme', function(req, res, next) {
+  res.status('200')
+  var theme = res.paramstheme
+  /* I let Thomas find a way to pull this from the DB*/
+  var obj = {score: 5}
+  res.send(JSON.stringify(obj))
+})
+
+
+
 
 /* Post new user to database */
 router.post('/register', function(req, res, next){
