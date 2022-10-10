@@ -66,6 +66,8 @@ router.post('/score/:theme', function(req, res, next) {
 
   /* Score */
   var obj = {msg: req.body.score}
+  console.log(req.body)
+  console.log("here!")
 
   /* Send to database ???? */
 
@@ -94,7 +96,7 @@ router.get('/pscore/:theme', function(req, res, next) {
 
 /* Post new user to database */
 router.post('/register', function(req, res, next){
-  var email = req.body; 
+  var email = req.body.email; 
   console.log(email);
   //Create reusable transporter 
   let transporter = nodemailer.createTransport({
@@ -122,6 +124,10 @@ router.post('/register', function(req, res, next){
       console.log("Email Sent!")
     }
   })
+
+  res.status('200')
+  res.send({success:"account created"})
+
 })
 
 module.exports = router;
