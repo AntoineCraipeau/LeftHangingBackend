@@ -1,6 +1,5 @@
 var express = require('express');
 const nodemailer = require('nodemailer');
-var mysql = require('mysql');
 var router = express.Router();
 
 
