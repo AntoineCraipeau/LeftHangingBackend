@@ -10,6 +10,9 @@ var cors = require('cors')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var authRouter = require('./routes/auth');
+var scoreRouter = require('./routes/score');
+var wordsRouter = require('./routes/words');
 
 var app = express();
 
@@ -59,6 +62,9 @@ app.listen(3001, () => {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/auth', authRouter);
+app.use('/score', scoreRouter);
+app.use('/words', wordsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
