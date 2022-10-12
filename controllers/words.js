@@ -8,7 +8,6 @@ function getWordsTheme(req, res){
         password : "wordpanicdatabasepassword2002",
         port     : 3306
     }); 
-
     connection.connect(function(err) {
     if (err) {
         console.error('Database connection failed: ' + err.stack);
@@ -16,16 +15,18 @@ function getWordsTheme(req, res){
     }
     console.log('Connected to database.');
     });
-
+    /* Get all value from the table Word which has the Theme chosen */ 
     connection.query('SELECT Name FROM DatabaseWordPanic.Word WHERE DatabaseWordPanic.Word.Theme = "'+req.params.theme+'"',
     function(err, rows, fields) {
         if (err) throw err;
         res.send(JSON.stringify({response:rows[Math.floor(Math.random()*rows.length)]}));
         });
-
+    
+    /* Ends the connection with the database */
     connection.end;
 
 }
+/* Exports methods to other files  */
 module.exports = {
     getWordsTheme
 };
