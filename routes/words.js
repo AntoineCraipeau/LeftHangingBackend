@@ -5,7 +5,7 @@ var words = require('../controllers/words.js');
 
 /* GET Words Page. */
 router.get('/:theme', function(req, res, next) {
-  words.getWordsTheme(res, req);
-  })
+    words.getWordsTheme(req, res);
+})
 
 module.exports = router;

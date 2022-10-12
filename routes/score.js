@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-
+var scores = require('../controllers/score.js')
 
 /* Post Score to database */
-router.post('/score/:theme', function(req, res, next) {
+router.post('/:theme', function(req, res, next) {
     /* Sucess status */
     res.status('200')
   
@@ -22,11 +22,7 @@ router.post('/score/:theme', function(req, res, next) {
   })
 
 /* Get all score from a theme */
-router.get('/score/:theme', function(req, res, next) {
-    res.status('200')
-    var theme = res.paramstheme
-    /* I let Thomas find a way to pull this from the DB*/
-    var obj = [{id: 1, owner: 'Leowenex', score: 5},{id: 2, owner: 'Totopoiuytreza', score: 3}]
-    res.send(JSON.stringify(obj))
+router.get('/:theme', function(req, res, next) {
+    scores.getDatabaseScore(req,res);
 })
 module.exports = router;
