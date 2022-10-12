@@ -19,6 +19,7 @@ function getWordsTheme(req, res){
     connection.query('SELECT Name FROM DatabaseWordPanic.Word WHERE DatabaseWordPanic.Word.Theme = "'+req.params.theme+'"',
     function(err, rows, fields) {
         if (err) throw err;
+        res.status(200);
         res.send(JSON.stringify({response:rows[Math.floor(Math.random()*rows.length)]}));
         });
     

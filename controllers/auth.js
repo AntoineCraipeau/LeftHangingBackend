@@ -22,9 +22,11 @@ function getLogin(req, res){
         if (err) throw err;
         res.send(JSON.stringify(rows));
         if(rows[0].Password == req.body.password){
+            res.status(200);
             console.log("Password Matched");
         }
         else{
+            res.status(401);
             console.log("Wrong Password");  
         }
     });
