@@ -58,4 +58,17 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+/* BEGIN db initialization */
+const Op = {}
+const dbConfig = require("./db.config.js");
+const Sequelize = require("sequelize");
+const connection = new Sequelize(dbConfig.DB, dbConfig.USER,
+dbConfig.PASSWORD, {
+host: dbConfig.HOST,
+dialect: dbConfig.dialect,
+pool: dbConfig.pool
+});
+/* END db initialization */
+
+
 module.exports = app;
