@@ -161,9 +161,3 @@ function sendConfirmationMail(req, res){
     res.status('200');
     res.send({success:"account created"});
 }
-
-/* Exports methods to other files  */
-module.exports = {
-    getLogin,
-    registerNewUser
-};

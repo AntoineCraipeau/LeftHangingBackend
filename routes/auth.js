@@ -5,14 +5,10 @@ var router = express.Router();
 
 
 /* Verification of the account with the database */
-router.post('/login', function(req, res, next){
-  auth.getLogin(req, res);
-})
+router.post('/login', auth.login);
 
 
 /* Post new user to database and send confirmation mail */
-router.post('/register', function(req, res, next){
-    auth.registerNewUser(req, res);
-  })
+router.post('/register',)
 
   module.exports = router;
