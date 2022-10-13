@@ -1,24 +1,14 @@
 var mysql = require('mysql');
 var nodemailer = require('nodemailer');
-var Sequelize = require('sequelize');
+const Sequelize = require("../db.connection");
+const connection = Sequelize.connection;
 const dbConfig = require("../db.config.js");
 const {Op} = require('sequelize');
 
 const users = require("./users");
 const sessions = require("./session");
 
-/* BEGIN db initialization */
-const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
-    pool: {
-        max: dbConfig.pool.max,
-        min: dbConfig.pool.min,
-        acquire: dbConfig.pool.acquire,
-        idle: dbConfig.pool.idle
-    }
-});
-const Person = require('../models/user.model')(connection, Sequelize);
+const Person = require('../models/user.model')(Sequelize.connection, Sequelize.library);
 
 exports.login = async (req, res) => {
     let user = await users.findByEmail(req, res)

@@ -68,12 +68,9 @@ const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, 
 /* Synchronize database and add relationships */
 const Theme = require("./models/theme.model")(connection, Sequelize);
 
-
 const Score = require("./models/score.model")(connection, Sequelize);
 
-
 const User = require("./models/user.model")(connection, Sequelize);
-
 
 const Word = require("./models/word.model")(connection, Sequelize);
 
@@ -81,7 +78,7 @@ const Session = require("./models/session.model")(connection, Sequelize);
 
 Theme.hasMany(Score, {as:"scores", foreignKey:"Theme"});
 Theme.hasMany(Word, {as:"words", foreignKey:"Theme"});
-Theme.sync({ force: false, alter: true });
+
 
 Score.belongsTo(Theme, {as:"theme", foreignKey:'Theme'})
 Score.belongsTo(User, {as:"owner", foreignKey:'Id_Person'})

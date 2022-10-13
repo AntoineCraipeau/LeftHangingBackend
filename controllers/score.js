@@ -1,21 +1,10 @@
 var mysql = require('mysql');
 const dbConfig = require("../db.config");
-const Sequelize = require("sequelize");
+const Sequelize = require("../db.connection");
 const {Op} = require('sequelize');
 
-/* BEGIN db initialization */
-const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
-    pool: {
-        max: dbConfig.pool.max,
-        min: dbConfig.pool.min,
-        acquire: dbConfig.pool.acquire,
-        idle: dbConfig.pool.idle
-    }
-});
-const Score = require("../models/score.model")(connection, Sequelize);
-const Theme = require("../models/theme.model")(connection, Sequelize);
+const Score = require("../models/score.model")(Sequelize.connection, Sequelize.library);
+const Theme = require("../models/theme.model")(Sequelize.connection, Sequelize.library);
 
 exports.findAll = (req, res) => {
     var condition = {where: {Theme: {[Op.like]: req.params.theme}}}
