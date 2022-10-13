@@ -4,6 +4,11 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             primaryKey:true
         }
-    }, { timestamps: true });
+    }, { timestamps: false });
+    Theme.associate = models =>{
+        Theme.hasMany(models.Score);
+        Theme.hasMany(models.Words);
+    }
+    sequelize.sync({ force: false, alter: true });
     return Theme;
 };

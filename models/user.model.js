@@ -13,7 +13,10 @@ module.exports = (sequelize, Sequelize) => {
         Password: {
             type: Sequelize.STRING
         }
-    }, { timestamps: true });
-
+    }, { timestamps: false });
+    User.associate = models =>{
+        User.hasMany(models.Score);
+    }
+    sequelize.sync({ force: false, alter: true });
     return User;
 };

@@ -20,7 +20,7 @@ const Theme = require("../models/theme.model")(connection, Sequelize);
 exports.getWordsTheme = (req, res) => {
     var condition = {Theme: {[Op.like]: req.params.theme}}
 
-    Word.findAll({include: [{model:Theme, as: 'wordTheme'}]})
+    Word.findAll({include: {model:Theme}})
         .then(data => {
             res.send(data);
         })

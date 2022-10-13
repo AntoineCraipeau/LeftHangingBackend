@@ -7,7 +7,10 @@ module.exports = (sequelize, Sequelize) => {
         picture: {
             type: Sequelize.STRING
         }
-    }, { timestamps: true });
-
+    }, { timestamps: false });
+    Word.associate = models =>{
+        Word.belongsTo(models.Theme);
+    }
+    sequelize.sync({ force: false, alter: true });
     return Word;
 };

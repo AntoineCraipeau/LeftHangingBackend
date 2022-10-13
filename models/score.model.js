@@ -10,7 +10,11 @@ module.exports = (sequelize, Sequelize) => {
         Moment:{
             type: Sequelize.STRING
         }
-    }, { timestamps: true });
-
+    }, { timestamps: false });
+    Score.associate = models =>{
+        Score.belongsTo(models.User);
+        Score.belongsTo(models.Theme);
+    }
+    sequelize.sync({ force: false, alter: true });
     return Score;
 };
