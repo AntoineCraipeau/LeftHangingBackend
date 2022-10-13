@@ -90,7 +90,7 @@ User.sync({ force: false, alter: true });
 Word.belongsTo(Theme, {as:"theme", foreignKey:'Theme'});
 Word.sync({ force: false, alter: true });
 
-Session.belongsTo(User, {as: "user", foreignKey: "userId"});
+Session.belongsTo(User, {as: "user", foreignKey: "Id_Person"});
 Session.sync({ force: false, alter: true });
 
 module.exports = app;

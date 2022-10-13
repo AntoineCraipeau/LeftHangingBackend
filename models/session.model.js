@@ -6,8 +6,8 @@ module.exports = (sequelize, Sequelize) => {
         validUntil: {
             type: Sequelize.DATE
         },
-        userId: {
-            type: Sequelize.INTEGER
+        Id_Person: {
+            type: Sequelize.BIGINT
         }
     }, { timestamps: false });
 
