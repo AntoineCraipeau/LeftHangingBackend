@@ -55,26 +55,20 @@ app.use(function(err, req, res, next) {
 });
 
 /* BEGIN db initialization */
-const Op = {}
-const dbConfig = require("./db.config.js");
-const Sequelize = require("sequelize");
-const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-  pool: dbConfig.pool
-});
+const Sequelize = require("./db.connection");
+const connection = Sequelize.connection;
 /* END db initialization */
 
 /* Synchronize database and add relationships */
-const Theme = require("./models/theme.model")(connection, Sequelize);
+const Theme = require("./models/theme.model")(connection, Sequelize.library);
 
-const Score = require("./models/score.model")(connection, Sequelize);
+const Score = require("./models/score.model")(connection, Sequelize.library);
 
-const User = require("./models/user.model")(connection, Sequelize);
+const User = require("./models/user.model")(connection, Sequelize.library);
 
-const Word = require("./models/word.model")(connection, Sequelize);
+const Word = require("./models/word.model")(connection, Sequelize.library);
 
-const Session = require("./models/session.model")(connection, Sequelize);
+const Session = require("./models/session.model")(connection, Sequelize.library);
 
 Theme.hasMany(Score, {as:"scores", foreignKey:"Theme"});
 Theme.hasMany(Word, {as:"words", foreignKey:"Theme"});
