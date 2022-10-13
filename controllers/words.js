@@ -20,7 +20,7 @@ const Theme = require("../models/theme.model")(connection, Sequelize);
 exports.getWordsTheme = (req, res) => {
     var condition = {Theme: {[Op.like]: req.params.theme}}
 
-    Word.findAll({include: [{model:Theme, as: 'idTheme'}]})
+    Word.findAll({include: [{model:Theme, as: 'wordTheme'}]})
         .then(data => {
             res.send(data);
         })
@@ -30,6 +30,10 @@ exports.getWordsTheme = (req, res) => {
                     err.message || "Some error occurred while retrieving users."
             });
         });
+}
+
+exports.getAll = (req,res) => {
+    Word.findAll().then(data => {res.send(data);})
 }
 
 function WordsTheme(req, res){
