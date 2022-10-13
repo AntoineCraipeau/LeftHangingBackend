@@ -50,7 +50,7 @@ exports.postScore = (req, res) => {
 }
 
 
-
+//Get scores from a theme in the database using SQL language
 function getDatabaseScore(req,res){
     /* Connecting to database */
     var connection = mysql.createConnection({
@@ -80,7 +80,7 @@ function getDatabaseScore(req,res){
     connection.end;
 
 }
-
+//Post score in the database using SQL language
 function postScore(req, res){
     var date = new Date();
     var currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();

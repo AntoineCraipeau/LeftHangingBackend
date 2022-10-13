@@ -26,6 +26,7 @@ exports.getAll = (req,res) => {
     Word.findAll().then(data => {res.send(data);})
 }
 
+//Get random word from the theme (using SQL language)
 function WordsTheme(req, res){
     /* Connecting to database */
     var connection = mysql.createConnection({
