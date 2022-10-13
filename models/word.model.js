@@ -8,9 +8,11 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         }
     }, { timestamps: false });
+    /*
     Word.associate = models =>{
-        Word.belongsTo(models.Theme);
+        Word.belongsTo(models.Theme, {foreignKey: 'Theme'});
     }
     sequelize.sync({ force: false, alter: true });
+    */
     return Word;
 };

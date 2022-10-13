@@ -67,21 +67,30 @@ const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, 
 
 /* Synchronize database and add relationships */
 const Theme = require("./models/theme.model")(connection, Sequelize);
-//Theme.sync({ force: false, alter: true });
+
 
 const Score = require("./models/score.model")(connection, Sequelize);
-//Theme.hasMany(Score, {as:"theme", foreignKey:"idTheme"});
-//Score.sync({ force: false, alter: true });
+
 
 const User = require("./models/user.model")(connection, Sequelize);
-//User.hasMany(Score);
-//User.sync({ force: false, alter: true });
+
 
 const Word = require("./models/word.model")(connection, Sequelize);
-//Theme.hasMany(Word, {as:"wordtheme", foreignKey:"idTheme"});
-//Word.belongsTo(Theme, {foreignKey:'idTheme'});
-//Word.sync({ force: false, alter: true });
 
+
+Theme.hasMany(Score, {as:"scores", foreignKey:"Theme"});
+Theme.hasMany(Word, {as:"words", foreignKey:"Theme"});
+Theme.sync({ force: false, alter: true });
+
+Score.belongsTo(Theme, {as:"theme", foreignKey:'Theme'})
+Score.belongsTo(User, {as:"owner", foreignKey:'Id_Person'})
+Score.sync({ force: false, alter: true });
+
+User.hasMany(Score, {as:"score", foreignKey:"Id_Person"});
+User.sync({ force: false, alter: true });
+
+Word.belongsTo(Theme, {as:"theme", foreignKey:'Theme'});
+Word.sync({ force: false, alter: true });
 
 
 module.exports = app;

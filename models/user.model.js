@@ -1,7 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
     const User = sequelize.define("Person", {
         Id_Person:{
-            type: Sequelize.INTEGER,
+            type: Sequelize.BIGINT,
             primaryKey:true
         },
         Username: {
@@ -14,9 +14,11 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         }
     }, { timestamps: false });
+    /*
     User.associate = models =>{
         User.hasMany(models.Score);
     }
+    */
     sequelize.sync({ force: false, alter: true });
     return User;
 };

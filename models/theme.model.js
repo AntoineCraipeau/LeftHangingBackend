@@ -5,10 +5,12 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey:true
         }
     }, { timestamps: false });
+    /*
     Theme.associate = models =>{
         Theme.hasMany(models.Score);
-        Theme.hasMany(models.Words);
+        Theme.hasMany(models.Words,{foreignKey: 'Theme',sourceKey: 'themeId'});
     }
     sequelize.sync({ force: false, alter: true });
+    */
     return Theme;
 };
