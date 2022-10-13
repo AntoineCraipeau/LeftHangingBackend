@@ -4,8 +4,8 @@ var Sequelize = require('sequelize');
 const dbConfig = require("../db.config.js");
 const {Op} = require('sequelize');
 
-const users = require("./controllers/user.controller.js");
-const sessions = require("./controllers/session.controller");
+const users = require("./users");
+const sessions = require("./session");
 
 /* BEGIN db initialization */
 const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {

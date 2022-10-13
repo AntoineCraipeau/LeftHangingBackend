@@ -77,6 +77,7 @@ const User = require("./models/user.model")(connection, Sequelize);
 
 const Word = require("./models/word.model")(connection, Sequelize);
 
+const Session = require("./models/session.model")(connection, Sequelize);
 
 Theme.hasMany(Score, {as:"scores", foreignKey:"Theme"});
 Theme.hasMany(Word, {as:"words", foreignKey:"Theme"});
@@ -92,5 +93,7 @@ User.sync({ force: false, alter: true });
 Word.belongsTo(Theme, {as:"theme", foreignKey:'Theme'});
 Word.sync({ force: false, alter: true });
 
+Session.belongsTo(User);
+Session.sync({ force: false, alter: true });
 
 module.exports = app;
