@@ -3,12 +3,8 @@ var router = express.Router();
 var score = require('../controllers/score.js');
 
 /* Post Score to database */
-router.post('/:theme', function(req, res, next) {
-    score.postScore(req, res);
-  })
+router.post('/:theme', function(req, res, next) {})
 
 /* Get all score from a theme */
-router.get('/:theme', function(req, res, next) {
-    score.getDatabaseScore(req,res);
-})
+router.get('/:theme', score.findAll);
 module.exports = router;

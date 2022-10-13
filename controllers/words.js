@@ -16,7 +16,6 @@ const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, 
 });
 const Word = require("../models/word.model")(connection, Sequelize);
 const Theme = require("../models/theme.model")(connection, Sequelize);
-var theme = Word.themeId;
 
 exports.getWordsTheme = (req, res) => {
     var condition = {where: {Theme: {[Op.like]: req.params.theme}}}
@@ -24,7 +23,7 @@ exports.getWordsTheme = (req, res) => {
 
     Word.findAll(condition)
         .then(data => {
-            res.send(data);
+            res.send(data[Math.floor(Math.random()*data.length)]);
         })
         .catch(err => {
             res.status(500).send({

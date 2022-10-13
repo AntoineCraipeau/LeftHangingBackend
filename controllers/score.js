@@ -1,4 +1,66 @@
 var mysql = require('mysql');
+const dbConfig = require("../db.config");
+const Sequelize = require("sequelize");
+const {Op} = require('sequelize');
+
+/* BEGIN db initialization */
+const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+    host: dbConfig.HOST,
+    dialect: dbConfig.dialect,
+    pool: {
+        max: dbConfig.pool.max,
+        min: dbConfig.pool.min,
+        acquire: dbConfig.pool.acquire,
+        idle: dbConfig.pool.idle
+    }
+});
+const Score = require("../models/score.model")(connection, Sequelize);
+const Theme = require("../models/theme.model")(connection, Sequelize);
+
+exports.findAll = (req, res) => {
+    var condition = {where: {Theme: {[Op.like]: req.params.theme}}}
+    var include = {include: Theme}
+
+    Score.findAll(condition)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving users."
+            });
+        });
+}
+
+
+exports.postScore = (req, res) => {
+    var date = new Date();
+    var currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    var condition = {where: {Theme: {[Op.like]: req.params.theme}}}
+    var include = {include: Theme}
+
+    // Create a Score
+    const score = {
+        Score: req.body.score,
+        Moment: currentDate,
+        Theme: req.params.theme,
+        Id_Person: 1
+    };
+
+    Score.create(score)
+        .then(data =>{
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while sending the Score."
+            });
+        });
+}
+
+
 
 function getDatabaseScore(req,res){
     /* Connecting to database */
@@ -60,8 +122,3 @@ function postScore(req, res){
     /* Ends the connection with the database */
     connection.end;
 }
-/* Exports methods to other files  */
-module.exports = {
-    getDatabaseScore,
-    postScore,
-};
