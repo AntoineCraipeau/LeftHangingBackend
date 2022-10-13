@@ -3,9 +3,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-var mysql = require('mysql');
-
 var cors = require('cors')
 
 var indexRouter = require('./routes/index');
@@ -31,7 +28,6 @@ app.use(cors({
 }));
 
 app.listen(3001, () => {
-  
   console.log("Example app listening at port 3001!");
 
 })
@@ -62,13 +58,30 @@ app.use(function(err, req, res, next) {
 const Op = {}
 const dbConfig = require("./db.config.js");
 const Sequelize = require("sequelize");
-const connection = new Sequelize(dbConfig.DB, dbConfig.USER,
-dbConfig.PASSWORD, {
-host: dbConfig.HOST,
-dialect: dbConfig.dialect,
-pool: dbConfig.pool
+const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect,
+  pool: dbConfig.pool
 });
 /* END db initialization */
+
+/* Synchronize database and add relationships */
+const Theme = require("./models/theme.model")(connection, Sequelize);
+Theme.sync({ force: false, alter: true });
+
+const Score = require("./models/score.model")(connection, Sequelize);
+Theme.hasMany(Score, {as:"theme", foreignKey:"idTheme"});
+Score.sync({ force: false, alter: true });
+
+const User = require("./models/user.model")(connection, Sequelize);
+User.hasMany(Score);
+User.sync({ force: false, alter: true });
+
+const Word = require("./models/word.model")(connection, Sequelize);
+Theme.hasMany(Word, {as:"wordtheme", foreignKey:"idTheme"});
+Word.belongsTo(Theme, {foreignKey:'idTheme'});
+Word.sync({ force: false, alter: true });
+
 
 
 module.exports = app;

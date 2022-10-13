@@ -1,6 +1,38 @@
 var mysql = require('mysql');
+const dbConfig = require("../db.config");
+const Sequelize = require("sequelize");
+const {Op} = require('sequelize');
 
-function getWordsTheme(req, res){
+/* BEGIN db initialization */
+const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+    host: dbConfig.HOST,
+    dialect: dbConfig.dialect,
+    pool: {
+        max: dbConfig.pool.max,
+        min: dbConfig.pool.min,
+        acquire: dbConfig.pool.acquire,
+        idle: dbConfig.pool.idle
+    }
+});
+const Word = require("../models/word.model")(connection, Sequelize);
+const Theme = require("../models/theme.model")(connection, Sequelize);
+
+exports.getWordsTheme = (req, res) => {
+    var condition = {Theme: {[Op.like]: req.params.theme}}
+
+    Word.findAll({include: [{model:Theme, as: 'idTheme'}]})
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving users."
+            });
+        });
+}
+
+function WordsTheme(req, res){
     /* Connecting to database */
     var connection = mysql.createConnection({
         host     : "wordpanic-database-1.cnmskxwcoqjq.us-east-2.rds.amazonaws.com",
@@ -27,7 +59,3 @@ function getWordsTheme(req, res){
     connection.end;
 
 }
-/* Exports methods to other files  */
-module.exports = {
-    getWordsTheme
-};

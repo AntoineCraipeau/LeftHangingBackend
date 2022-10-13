@@ -10,7 +10,7 @@ router.post('/login', function(req, res, next){
 })
 
 
-  /* Post new user to database and send confirmation mail */
+/* Post new user to database and send confirmation mail */
 router.post('/register', function(req, res, next){
     auth.registerNewUser(req, res);
   })

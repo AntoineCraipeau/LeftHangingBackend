@@ -1,21 +1,43 @@
 var mysql = require('mysql');
 var nodemailer = require('nodemailer');
+var Sequelize = require('sequelize');
+const dbConfig = require("../db.config.js");
+const {Op} = require('sequelize');
+
+/* BEGIN db initialization */
+const connection = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+    host: dbConfig.HOST,
+    dialect: dbConfig.dialect,
+    pool: {
+        max: dbConfig.pool.max,
+        min: dbConfig.pool.min,
+        acquire: dbConfig.pool.acquire,
+        idle: dbConfig.pool.idle
+    }
+});
+const Person = require('../models/user.model')(connection, Sequelize);
+
+/*
+exports.login = (req, res) => {
+    var condition = {
+        email: {[Op.is]: req.body.email}
+    };
+    User.findAll({where: condition})
+        .then(data =>{
+            
+        })
+        .catch(err=>{
+            res.status(500).send({
+                message:
+                    err.message || "Some error occured when login"
+            });
+        });
+}
+*/
 
 function getLogin(req, res){
-    /* Connecting to database */
-    var connection = mysql.createConnection({
-        host     : "wordpanic-database-1.cnmskxwcoqjq.us-east-2.rds.amazonaws.com",
-        user     : "admin",
-        password : "wordpanicdatabasepassword2002",
-        port     : 3306
-    }); 
-    connection.connect(function(err) {
-    if (err) {
-        console.error('Database connection failed: ' + err.stack);
-        return;
-    }
+    
     console.log('Connected to database.');
-    });
     /* Get the password value of the chosen email */ 
     connection.query('SELECT Password FROM DatabaseWordPanic.Person WHERE DatabaseWordPanic.Person.Email = "'+req.body.email+'"',
     function(err, rows, fields) {
@@ -30,9 +52,6 @@ function getLogin(req, res){
             console.log("Wrong Password");  
         }
     });
-    /* Ends the connection with the database */
-    connection.end;
-
 }
 
 
