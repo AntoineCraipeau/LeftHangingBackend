@@ -13,8 +13,8 @@ const Person = require('../models/user.model')(Sequelize.connection, Sequelize.l
 exports.login = async (req, res) => {
     let user = await users.findByEmail(req, res)
     // if the user exists and password matches
-    console.log(user.id,user.password,req.password)
-    if (user && user.id && user.password == req.body.password) {
+    console.log(user.Id_Person,user.Password,req.body.Password)
+    if (user && user.Id_Person && user.Password == req.body.Password) {
 
         // search for a session for this user
         let session = await sessions.findByUserId(user.id)
