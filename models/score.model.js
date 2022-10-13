@@ -9,6 +9,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         Moment:{
             type: Sequelize.DATE
+        },
+        Theme:{
+            type:Sequelize.STRING
+        },
+        Id_Person:{
+            type:Sequelize.BIGINT
         }
     }, { timestamps: false });
     /*

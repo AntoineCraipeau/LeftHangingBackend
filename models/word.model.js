@@ -6,6 +6,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         picture: {
             type: Sequelize.STRING
+        },
+        Theme:{
+            type:Sequelize.STRING
         }
     }, { timestamps: false });
     /*
