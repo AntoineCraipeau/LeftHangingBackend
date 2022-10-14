@@ -39,12 +39,14 @@ exports.create = (req, res) => {
 // Get all records with a certain email (sent from the front-end)
 exports.findByEmail = async (req, res) => {
     const email = req.body.Email;
-    var condition = email ? { Email: { [Op.eq]: email } } : null;
+    console.log(email);
+    var condition = email ? { email: { [Op.eq]: email } } : null;
 
     var result;
     await User.findOne({ where: condition })
     .then(data => {
         result = data
+        console.log(result)
     })
     .catch(data => {
         result = data
