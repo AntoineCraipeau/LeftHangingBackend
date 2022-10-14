@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors({
-  origin: 'http://68.234.224.24'
+  origin: '*'
 }));
 
 app.listen(3001, () => {

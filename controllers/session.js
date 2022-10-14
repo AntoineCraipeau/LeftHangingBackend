@@ -14,7 +14,7 @@ exports.create = async (id) => {
     const obj = {
         token: uuidv4(),
         validUntil: validity,
-        userId: id
+        Id_Person: id
     };
 
     // Save in the database
