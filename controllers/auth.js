@@ -63,6 +63,36 @@ exports.isLoggedIn = async (req, res) => {
     return false
 }
 
+exports.register = async(req, res) => {
+    console.log("bjr")
+    // Create a new User
+    const user = {
+        Username: req.body.Username,
+        Email: req.body.Email,
+        Password: req.body.Password,
+    };
+    let verify_user = await users.findByEmail(req, res);
+    if(verify_user){
+        res.status(401);
+        res.send({response: "Account already created"});
+        return;
+    }
+
+    Person.create(user)
+        .then(data =>{
+            sendConfirmationMail(req, res);
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while sending the Score."
+            });
+        });
+
+}
+
+
 function getLogin(req, res){
     
     console.log('Connected to database.');
@@ -142,10 +172,10 @@ function sendConfirmationMail(req, res){
     // Message object
     let message = {
     from: 'wordpanic@gmail.com',
-    to: req.body.email,
+    to: req.body.Email,
     subject: 'Confirmation of Account creation',
-    text: 'Hi ' + req.body.username +",",
-    html:'Hi '+ req.body.username + ',' + '<br><p>Thanks again for creating an account on WordPanic.</p> <p>Follow this link to begin your WordPanic adventure!'
+    text: 'Hi ' + req.body.Username +",",
+    html:'Hi '+ req.body.Username + ',' + '<br><p>Thanks again for creating an account on WordPanic.</p> <p>Follow this link to begin your WordPanic adventure!'
     };
 
     // send mail with defined transport object
@@ -157,7 +187,4 @@ function sendConfirmationMail(req, res){
         console.log("Email Sent!")
     }
     })
-
-    res.status('200');
-    res.send({success:"account created"});
 }

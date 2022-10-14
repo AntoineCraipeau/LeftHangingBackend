@@ -9,6 +9,6 @@ router.post('/login', auth.login);
 
 
 /* Post new user to database and send confirmation mail */
-router.post('/register',)
+router.post('/register', auth.register);  
 
   module.exports = router;

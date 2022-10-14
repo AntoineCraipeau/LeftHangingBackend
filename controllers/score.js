@@ -2,14 +2,14 @@ var mysql = require('mysql');
 const dbConfig = require("../db.config");
 const Sequelize = require("../db.connection");
 const {Op} = require('sequelize');
+const { findByToken } = require('./session');
 
 const Score = require("../models/score.model")(Sequelize.connection, Sequelize.library);
-const Theme = require("../models/theme.model")(Sequelize.connection, Sequelize.library);
+const Session = require("../models/session.model")(Sequelize.connection, Sequelize.library);
 
 exports.findAll = (req, res) => {
     var condition = {where: {Theme: {[Op.like]: req.params.theme}}}
-    var include = {include: Theme}
-
+    
     Score.findAll(condition)
         .then(data => {
             res.send(data);
@@ -26,15 +26,17 @@ exports.findAll = (req, res) => {
 exports.postScore = (req, res) => {
     var date = new Date();
     var currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-    var condition = {where: {Theme: {[Op.like]: req.params.theme}}}
-    var include = {include: Theme}
+    var idperson = Session.findByToken(req.get("authorization")).Id_Person;
+    console.log(idperson);
+
+    
 
     // Create a Score
     const score = {
         Score: req.body.score,
         Moment: currentDate,
         Theme: req.params.theme,
-        Id_Person: 1
+        Id_Person: 1 //idperson
     };
 
     Score.create(score)
