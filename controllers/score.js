@@ -5,13 +5,25 @@ const {Op} = require('sequelize');
 const { findByToken } = require('./session');
 
 const Score = require("../models/score.model")(Sequelize.connection, Sequelize.library);
+const User = require("../models/user.model")(Sequelize.connection, Sequelize.library);
 const Session = require("../models/session.model")(Sequelize.connection, Sequelize.library);
 
 exports.findAll = (req, res) => {
     var condition = {where: {Theme: {[Op.like]: req.params.theme}}}
+
+    
     
     Score.findAll(condition)
         .then(data => {
+            for(var i=0; i<data.length; i ++){
+                var score = data[i].Score;
+                var moment = data[i].Moment;
+                User.findOne({where: {Id_Person: {[Op.like]: data[0].Id_Person}}})
+                .then(data => {
+                    var username = data.Username;
+                    console.log(score, moment, username);
+                });
+            }
             res.send(data);
         })
         .catch(err => {
