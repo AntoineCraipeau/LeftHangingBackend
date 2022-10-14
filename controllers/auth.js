@@ -30,7 +30,7 @@ exports.login = async (req, res) => {
             token = session.token 
         } else {
             console.log("create new")
-            session = await sessions.create(user.id)
+            session = await sessions.create(user.Id_Person)
             if (session) {
                 token = session.token
             }

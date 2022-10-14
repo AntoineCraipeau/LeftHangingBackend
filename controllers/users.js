@@ -46,7 +46,6 @@ exports.findByEmail = async (req, res) => {
     await User.findOne({ where: condition })
     .then(data => {
         result = data
-        console.log(result)
     })
     .catch(data => {
         result = data
