@@ -63,6 +63,27 @@ exports.postScore = (req, res) => {
         })
 }
 
+// 
+exports.getUserBestScore = (req, res) =>{
+    session.findByToken(req.get("authorization")).then((session)=>{
+        users.findUsernamebyId(session.Id_Person)
+        .then((username)=>{
+            var condition = {where: {Id_Person: {[Op.like]: session.Id_Person}}};
+            Score.findAll(condition)
+            .then((data)=>{
+                data.sort(function(a, b){return a.Score - b.Score});
+                // Create a Score Board
+                score_item= {
+                    Score: data[0].Score,
+                    Moment: data[0].Moment,
+                    Username: username
+                }
+                res.send(score_item);  
+            })
+        });
+    })
+}
+
 
 //Get scores from a theme in the database using SQL language
 function getDatabaseScore(req,res){
