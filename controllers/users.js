@@ -1,5 +1,4 @@
 /* BEGIN db initialization */
-const { list } = require("postcss");
 const { Op } = require("sequelize");
 const Sequelize = require("../db.connection");
 const User = require("../models/user.model")(Sequelize.connection, Sequelize.library);
