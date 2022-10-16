@@ -95,12 +95,14 @@ exports.register = async(req, res) => {
 
 }
 
+/* Disconnect by making the token expire */
 exports.disconnect = async (req, res) => {
     sessions.findByToken(req.get("authorization")).then((session)=>{
         if(session){
             var date = new Date();
             var currentDate = date.getFullYear()-1 + "-" + date.getMonth() + "-" + date.getDate();
             var condition = {where: {token: {[Op.like]: session.token}}}
+            // Update validUntil variable to expire
             Session.update(
                 {validUntil: currentDate},
                 condition);
