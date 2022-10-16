@@ -5,26 +5,29 @@ const {Op} = require('sequelize');
 const { findByToken } = require('./session');
 
 const Score = require("../models/score.model")(Sequelize.connection, Sequelize.library);
-const User = require("../models/user.model")(Sequelize.connection, Sequelize.library);
 const Session = require("../models/session.model")(Sequelize.connection, Sequelize.library);
+const users = require("./users");
 
 exports.findAll = (req, res) => {
     var condition = {where: {Theme: {[Op.like]: req.params.theme}}}
-
-    
-    
+    //Create a empty list
+    var list = [];
     Score.findAll(condition)
         .then(data => {
+            // Enter loop for each item in the score table with the chosen Theme
             for(var i=0; i<data.length; i ++){
-                var score = data[i].Score;
-                var moment = data[i].Moment;
-                User.findOne({where: {Id_Person: {[Op.like]: data[0].Id_Person}}})
-                .then(data => {
-                    var username = data.Username;
-                    console.log(score, moment, username);
-                });
+                // For eacht item, use the function createScoreUsername to push the data in the list
+                users.createScoreUsername(data[i].Id_Person, data[i].Score, data[i].Moment, list).then(
+                    (listScore) => {
+                        /* If the number of item in the list is equal
+                        to the number of score item of the chosen Theme,
+                        then send to frontENd */
+                        if(listScore.length == data.length){
+                            res.send(listScore);
+                        }
+                    }
+                ) 
             }
-            res.send(data);
         })
         .catch(err => {
             res.status(500).send({

@@ -1,4 +1,5 @@
 /* BEGIN db initialization */
+const { list } = require("postcss");
 const { Op } = require("sequelize");
 const Sequelize = require("../db.connection");
 const User = require("../models/user.model")(Sequelize.connection, Sequelize.library);
@@ -52,6 +53,35 @@ exports.findByEmail = async (req, res) => {
     })
     return result
 };
+
+// Get username from a certain Id
+exports.findUsernamebyId = async (idPerson) => {
+    const id = idPerson;
+    var condition =  {where: {Id_Person: {[Op.like]: id}}};
+
+    var result;
+    await User.findOne(condition)
+    .then(data => {
+        result = data
+    })
+    .catch(data => {
+        result = data
+    })
+    return result
+};
+
+// Create JSON for a score associated with it's username
+exports.createScoreUsername = async (id, score, moment, list) => {
+    let user = await this.findUsernamebyId(id);
+    score_item= {
+        Score: score,
+        Moment: moment,
+        Username: user.Username
+    }
+    list.push(score_item);
+    return list;
+};
+
 
 // Get all records with a certain name (sent from the front-end)
 exports.findAll = (req, res) => {
