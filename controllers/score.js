@@ -1,11 +1,10 @@
 var mysql = require('mysql');
-const dbConfig = require("../db.config");
 const Sequelize = require("../db.connection");
 const {Op} = require('sequelize');
-const { findByToken } = require('./session');
 
 const Score = require("../models/score.model")(Sequelize.connection, Sequelize.library);
-const Session = require("../models/session.model")(Sequelize.connection, Sequelize.library);
+
+const session = require('./session');
 const users = require("./users");
 
 exports.findAll = (req, res) => {
@@ -41,29 +40,27 @@ exports.findAll = (req, res) => {
 exports.postScore = (req, res) => {
     var date = new Date();
     var currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-    var idperson = Session.findByToken(req.get("authorization")).Id_Person;
-    console.log(idperson);
 
-    
+    session.findByToken(req.get("authorization")).then((session)=>{
+        // Create a Score
+        const score = {
+            Score: req.body.score,
+            Moment: currentDate,
+            Theme: req.params.theme,
+            Id_Person: session.Id_Person
+        };
 
-    // Create a Score
-    const score = {
-        Score: req.body.score,
-        Moment: currentDate,
-        Theme: req.params.theme,
-        Id_Person: idperson
-    };
-
-    Score.create(score)
-        .then(data =>{
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while sending the Score."
+        Score.create(score)
+            .then(data =>{
+                res.send(data);
+            })
+            .catch(err => {
+                res.status(500).send({
+                    message:
+                        err.message || "Some error occurred while sending the Score."
+                });
             });
-        });
+        })
 }
 
 

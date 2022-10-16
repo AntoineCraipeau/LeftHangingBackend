@@ -1,10 +1,8 @@
 var mysql = require('mysql');
-const dbConfig = require("../db.config");
 const Sequelize = require("../db.connection");
 const {Op} = require('sequelize');
 
 const Word = require("../models/word.model")(Sequelize.connection, Sequelize.library);
-const Theme = require("../models/theme.model")(Sequelize.connection, Sequelize.library);
 
 exports.getWordsTheme = (req, res) => {
     var condition = {where: {Theme: {[Op.like]: req.params.theme}}}
