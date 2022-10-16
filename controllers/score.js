@@ -68,15 +68,20 @@ exports.getUserBestScore = (req, res) =>{
     session.findByToken(req.get("authorization")).then((session)=>{
         users.findUsernamebyId(session.Id_Person)
         .then((username)=>{
-            var condition = {where: {Id_Person: {[Op.like]: session.Id_Person}}};
+            var condition = {where: {
+                [Op.and]: [
+                    {Id_Person: {[Op.like]: session.Id_Person}},
+                    {Theme: {[Op.like]: req.params.theme}}
+                ]
+            }};
             Score.findAll(condition)
             .then((data)=>{
-                data.sort(function(a, b){return a.Score - b.Score});
+                data.sort(function(a, b){return b.Score - a.Score});
                 // Create a Score Board
                 score_item= {
                     Score: data[0].Score,
                     Moment: data[0].Moment,
-                    Username: username
+                    Username: username.Username
                 }
                 res.send(score_item);  
             })
