@@ -54,7 +54,6 @@ exports.findByToken = async (token) => {
     .catch(e => {
         console.log("Error", e)
     })
-    console.log(result);
     return result
 };
 

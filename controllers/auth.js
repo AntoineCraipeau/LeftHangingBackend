@@ -7,7 +7,9 @@ const users = require("./users");
 const sessions = require("./session");
 
 const Person = require('../models/user.model')(Sequelize.connection, Sequelize.library);
+const Session = require('../models/session.model')(Sequelize.connection, Sequelize.library);
 
+/* Login user if user is in the database */
 exports.login = async (req, res) => {
     let user = await users.findByEmail(req, res)
     // if the user exists and password matches
@@ -39,6 +41,7 @@ exports.login = async (req, res) => {
     }
 }
 
+/* Verify if the token is still valid */
 exports.isLoggedIn = async (req, res) => {
     var token = req.get("Authorization")
     console.log(token)
@@ -61,14 +64,16 @@ exports.isLoggedIn = async (req, res) => {
     return false
 }
 
+/* Register a new user to the database with data given from front-end */
 exports.register = async(req, res) => {
-    console.log("bjr")
     // Create a new User
     const user = {
         Username: req.body.Username,
         Email: req.body.Email,
         Password: req.body.Password,
     };
+
+    //Verify if user is in the database, send Already created if true
     let verify_user = await users.findByEmail(req, res);
     if(verify_user){
         res.status(401);
@@ -76,6 +81,7 @@ exports.register = async(req, res) => {
         return;
     }
 
+    //Create a new user and send it to database, alse send a confirmation email
     Person.create(user)
         .then(data =>{
             sendConfirmationMail(req, res);
@@ -90,73 +96,16 @@ exports.register = async(req, res) => {
 
 }
 
+exports.disconnect = async (req, res) => {
+    sessions.findByToken(req.get("authorization")).then((session)=>{
+        Session.findByToken
+        Session.update({
 
-function getLogin(req, res){
-    
-    console.log('Connected to database.');
-    /* Get the password value of the chosen email */ 
-    connection.query('SELECT Password FROM DatabaseWordPanic.Person WHERE DatabaseWordPanic.Person.Email = "'+req.body.email+'"',
-    function(err, rows, fields) {
-        if (err) throw err;
-        res.send(JSON.stringify(rows));
-        if(rows[0].Password == req.body.password){
-            res.status(200);
-            console.log("Password Matched");
-        }
-        else{
-            res.status(401);
-            console.log("Wrong Password");  
-        }
-    });
+        })
+    })
 }
 
-
-function registerNewUser(req, res){
-
-    /* Connecting to database */
-    var connection = mysql.createConnection({
-        host     : "wordpanic-database-1.cnmskxwcoqjq.us-east-2.rds.amazonaws.com",
-        user     : "admin",
-        password : "wordpanicdatabasepassword2002",
-        port     : 3306
-    }); 
-    connection.connect(function(err) {
-    if (err) {
-        console.error('Database connection failed: ' + err.stack);
-        return;
-    }
-    console.log('Connected to database.');
-    });
-
-    /* Get the password value of the chosen email */ 
-    connection.query('SELECT * FROM DatabaseWordPanic.Person WHERE DatabaseWordPanic.Person.Email = "'+req.body.email+'"',
-    function(err, rows, fields) {
-        try{
-            if(rows[0].Email == req.body.email){
-                res.status(401);
-                res.send({response: "Account already created"});
-            }
-        }catch(err){
-            res.status(200);
-            /* Get all value from the table Word which has the Theme chosen */ 
-            connection.query('INSERT INTO DatabaseWordPanic.Person (Email,Username,Password) VALUES ("' + req.body.email+'","' +req.body.username + '","'+req.body.password+'")',
-            function(err, rows, fields) {
-                if (err) throw err;
-                /* Send Confirmation email */
-                sendConfirmationMail(req, res);
-            })
-            res.send({response: "Account successfully created"});
-        };
-    });
-
-
-    
-    /* Ends the connection with the database */
-    connection.end;
-    
-
-}
-
+/* Send mail to email given */
 function sendConfirmationMail(req, res){
     //Create reusable transporter 
     let transporter = nodemailer.createTransport({

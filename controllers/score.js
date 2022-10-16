@@ -7,6 +7,7 @@ const Score = require("../models/score.model")(Sequelize.connection, Sequelize.l
 const session = require('./session');
 const users = require("./users");
 
+/* Send to the front-end the 10 best scores of a theme */
 exports.findAll = (req, res) => {
     var condition = {where: {Theme: {[Op.like]: req.params.theme}}}
     //Create a empty list
@@ -15,7 +16,7 @@ exports.findAll = (req, res) => {
         .then(data => {
             // Enter loop for each item in the score table with the chosen Theme
             for(var i=0; i<data.length; i ++){
-                // For eacht item, use the function createScoreUsername to push the data in the list
+                // For each item, use the function createScoreUsername to push the data in the list
                 users.createScoreUsername(data[i].Id_Person, data[i].Score, data[i].Moment, list).then(
                     (listScore) => {
                         /* If the number of item in the list is equal
@@ -36,7 +37,7 @@ exports.findAll = (req, res) => {
         });
 }
 
-
+/* Send to  */
 exports.postScore = (req, res) => {
     var date = new Date();
     var currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
@@ -66,26 +67,28 @@ exports.postScore = (req, res) => {
 // 
 exports.getUserBestScore = (req, res) =>{
     session.findByToken(req.get("authorization")).then((session)=>{
-        users.findUsernamebyId(session.Id_Person)
-        .then((username)=>{
-            var condition = {where: {
-                [Op.and]: [
-                    {Id_Person: {[Op.like]: session.Id_Person}},
-                    {Theme: {[Op.like]: req.params.theme}}
-                ]
-            }};
-            Score.findAll(condition)
-            .then((data)=>{
-                data.sort(function(a, b){return b.Score - a.Score});
-                // Create a Score Board
-                score_item= {
-                    Score: data[0]?data[0].Score:"Never played",
-                    Moment: data[0]?data[0].Moment:"Never played",
-                    Username: username.Username
-                }
-                res.send(score_item);  
-            })
-        });
+        if(session){
+            users.findUsernamebyId(session.Id_Person)
+            .then((username)=>{
+                var condition = {where: {
+                    [Op.and]: [
+                        {Id_Person: {[Op.like]: session.Id_Person}},
+                        {Theme: {[Op.like]: req.params.theme}}
+                    ]
+                }};
+                Score.findAll(condition)
+                .then((data)=>{
+                    data.sort(function(a, b){return b.Score - a.Score});
+                    // Create a Score Board
+                    score_item= {
+                        Score: data[0]?data[0].Score:"Never played",
+                        Moment: data[0]?data[0].Moment:"Never played",
+                        Username: username.Username
+                    }
+                    res.send(score_item);  
+                })
+            });
+        }
     })
 }
 

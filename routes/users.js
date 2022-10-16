@@ -11,8 +11,7 @@ router.get('/', function(req, res, next) {
 /* Get personnal scores from user */ 
 router.get('/score/:theme', score.getUserBestScore)
 
-/* Get user personnal info
-username / email */ 
+/* Get user personnal info */ 
 router.get('/myinfo', user.findPersonalInfo)
 
 module.exports = router;

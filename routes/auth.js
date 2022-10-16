@@ -12,4 +12,7 @@ router.post('/verifyLogin', auth.isLoggedIn);
 /* Post new user to database and send confirmation mail */
 router.post('/register', auth.register);  
 
+/* Disconnect user, make the token expire */
+router.get('/disconnect', auth.disconnect);
+
   module.exports = router;
