@@ -81,6 +81,20 @@ exports.createScoreUsername = async (id, score, moment, list) => {
     return list;
 };
 
+// Send Personal info from Id_Person to Frontend
+exports.findPersonalInfo = (req, res) => {
+    session.findByToken(req.get("authorization")).then((session)=>{
+        this.findUsernamebyId(session.Id_Person)
+        .then((user)=>{
+            personalInfo = {
+                Username: user.Username,
+                Email: user.Email,
+            }
+            res.send(personalInfo);
+        });
+    })
+}
+
 
 // Get all records with a certain name (sent from the front-end)
 exports.findAll = (req, res) => {
