@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
 
+/* Initialize all router */
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
@@ -32,6 +33,7 @@ app.listen(3001, () => {
 
 })
 
+/* Use all router */
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
@@ -61,18 +63,13 @@ const connection = Sequelize.connection;
 
 /* Synchronize database and add relationships */
 const Theme = require("./models/theme.model")(connection, Sequelize.library);
-
 const Score = require("./models/score.model")(connection, Sequelize.library);
-
 const User = require("./models/user.model")(connection, Sequelize.library);
-
 const Word = require("./models/word.model")(connection, Sequelize.library);
-
 const Session = require("./models/session.model")(connection, Sequelize.library);
 
 Theme.hasMany(Score, {as:"scores", foreignKey:"Theme"});
 Theme.hasMany(Word, {as:"words", foreignKey:"Theme"});
-
 
 Score.belongsTo(Theme, {as:"theme", foreignKey:'Theme'})
 Score.belongsTo(User, {as:"owner", foreignKey:'Id_Person'})

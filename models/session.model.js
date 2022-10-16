@@ -10,6 +10,5 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.BIGINT
         }
     }, { timestamps: false });
-
     return Session;
 };

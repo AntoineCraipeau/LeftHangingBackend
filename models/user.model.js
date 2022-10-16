@@ -14,11 +14,5 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         }
     }, { timestamps: false });
-    /*
-    User.associate = models =>{
-        User.hasMany(models.Score);
-    }
-    
-    sequelize.sync({ force: false, alter: true });*/
     return User;
 };

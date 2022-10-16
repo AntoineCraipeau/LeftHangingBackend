@@ -1,5 +1,4 @@
 var express = require('express');
-const nodemailer = require('nodemailer');
 var auth = require('../controllers/auth');
 var router = express.Router();
 

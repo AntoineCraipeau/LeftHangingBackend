@@ -17,12 +17,5 @@ module.exports = (sequelize, Sequelize) => {
             type:Sequelize.BIGINT
         }
     }, { timestamps: false });
-    /*
-    Score.associate = models =>{
-        Score.belongsTo(models.User);
-        Score.belongsTo(models.Theme);
-    }
-    sequelize.sync({ force: false, alter: true });
-    */
     return Score;
 };
