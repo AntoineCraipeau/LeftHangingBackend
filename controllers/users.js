@@ -93,6 +93,12 @@ exports.findPersonalInfo = (req, res) => {
                 Email: user.Email,
             }
             res.send(personalInfo);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while finding personal info."
+            });
         });
     })
 }
