@@ -99,7 +99,7 @@ exports.register = async(req, res) => {
 exports.disconnect = async (req, res) => {
     sessions.findByToken(req.get("authorization")).then((session)=>{
         var date = new Date();
-        var currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+        var currentDate = date.getFullYear()-1 + "-" + date.getMonth() + "-" + date.getDate();
         var condition = {where: {token: {[Op.like]: session.token}}}
         Session.update(
             {validUntil: currentDate},
