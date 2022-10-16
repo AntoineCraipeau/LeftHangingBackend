@@ -79,8 +79,8 @@ exports.getUserBestScore = (req, res) =>{
                 data.sort(function(a, b){return b.Score - a.Score});
                 // Create a Score Board
                 score_item= {
-                    Score: data[0].Score,
-                    Moment: data[0].Moment,
+                    Score: data[0].Score?data[0].Score:"Never played",
+                    Moment: data[0].Moment?data[0].Moment:"Never played",
                     Username: username.Username
                 }
                 res.send(score_item);  
