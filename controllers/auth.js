@@ -1,10 +1,9 @@
-var mysql = require('mysql');
 var nodemailer = require('nodemailer');
 const Sequelize = require("../db.connection");
-const connection = Sequelize.connection;
 
 const users = require("./users");
 const sessions = require("./session");
+const { Op } = require("sequelize");
 
 const Person = require('../models/user.model')(Sequelize.connection, Sequelize.library);
 const Session = require('../models/session.model')(Sequelize.connection, Sequelize.library);
