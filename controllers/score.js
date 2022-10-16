@@ -51,7 +51,7 @@ exports.postScore = (req, res) => {
         Score: req.body.score,
         Moment: currentDate,
         Theme: req.params.theme,
-        Id_Person: 1 //idperson
+        Id_Person: idperson
     };
 
     Score.create(score)

@@ -4,7 +4,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             primaryKey: true
         },
-        picture: {
+        Picture: {
             type: Sequelize.STRING
         },
         Theme:{

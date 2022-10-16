@@ -8,7 +8,6 @@ const Theme = require("../models/theme.model")(Sequelize.connection, Sequelize.l
 
 exports.getWordsTheme = (req, res) => {
     var condition = {where: {Theme: {[Op.like]: req.params.theme}}}
-    var include = {include: Theme}
 
     Word.findAll(condition)
         .then(data => {
@@ -17,7 +16,7 @@ exports.getWordsTheme = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving users."
+                    err.message || "Some error occurred while retrieving words."
             });
         });
 }
