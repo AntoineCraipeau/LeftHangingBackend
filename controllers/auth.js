@@ -104,6 +104,8 @@ exports.disconnect = async (req, res) => {
             Session.update(
                 {validUntil: currentDate},
                 condition);
+            res.status(205);
+            res.send();
         }
         
     })
