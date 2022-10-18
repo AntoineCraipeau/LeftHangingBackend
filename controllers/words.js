@@ -1,4 +1,3 @@
-var mysql = require('mysql');
 const Sequelize = require("../db.connection");
 const {Op} = require('sequelize');
 
