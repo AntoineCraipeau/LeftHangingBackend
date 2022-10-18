@@ -62,6 +62,9 @@ exports.findPersonalInfo = (req, res) => {
             }
             res.send(personalInfo);
         })
+        }else{
+            res.status("401");
+            res.send("Error: You are not connected.")
         }
         
     })

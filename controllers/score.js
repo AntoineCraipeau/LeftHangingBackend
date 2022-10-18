@@ -98,6 +98,9 @@ exports.getUserBestScore = (req, res) =>{
                     res.send(score_item);  
                 })
             });
+        }else{
+            res.status("401");
+            res.send("Error: You are not connected.")
         }
     })
 }
