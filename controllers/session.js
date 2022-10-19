@@ -58,8 +58,7 @@ exports.findByToken = async (token) => {
 };
 
 exports.deleteExpiredToken = async () => {
-    var date = new Date();
-    var currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    var currentDate = moment().format();
     var condition = {where: {validUntil: {[Op.lte]: currentDate}}}
     await Session.findAll(condition)
     .then(data => {
