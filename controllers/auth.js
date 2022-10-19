@@ -1,5 +1,6 @@
 var nodemailer = require('nodemailer');
 const Sequelize = require("../db.connection");
+const Crypto = require("crypto");
 
 const users = require("./users");
 const sessions = require("./session");
@@ -11,9 +12,9 @@ const Session = require('../models/session.model')(Sequelize.connection, Sequeli
 /* Login user if user is in the database */
 exports.login = async (req, res) => {
     let user = await users.findByEmail(req, res)
+    
     // if the user exists and password matches
-    console.log(user.Id_Person,user.Password,req.body.Password)
-    if (user && user.Id_Person && user.Password == req.body.Password) {
+    if (user && user.Id_Person && user.Password == Crypto.createHash('sha256').update(req.body.Password).digest('hex')) {
 
         // search for a session for this user
         let session = await sessions.findByUserId(user.id)
@@ -69,7 +70,7 @@ exports.register = async(req, res) => {
     const user = {
         Username: req.body.Username,
         Email: req.body.Email,
-        Password: req.body.Password,
+        Password: Crypto.createHash('sha256').update(req.body.Password).digest('hex'),
     };
 
     //Verify if user is in the database, send Already created if true
