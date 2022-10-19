@@ -57,6 +57,18 @@ exports.findByToken = async (token) => {
     return result
 };
 
+exports.deleteExpiredToken = async () => {
+    var date = new Date();
+    var currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    var condition = {where: {validUntil: {[Op.lte]: currentDate}}}
+    await Session.findAll(condition)
+    .then(data => {
+        for(var i=0; i<data.length; i++){
+            this.delete(data[i].id)
+        }
+    })
+}
+
 // Delete a record with a certain id
 exports.delete = (id) => {
     Session.destroy({

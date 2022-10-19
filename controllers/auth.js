@@ -96,8 +96,12 @@ exports.register = async(req, res) => {
 
 }
 
-/* Disconnect by making the token expire */
+/* Disconnect by deleting the token */
 exports.disconnect = async (req, res) => {
+    //Delete expired token in the database to to clean it
+    sessions.deleteExpiredToken();
+
+    //Delete the current token used by the user
     sessions.findByToken(req.get("authorization")).then((session)=>{
         if(session){
             // Delete session
