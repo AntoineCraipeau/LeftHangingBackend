@@ -17,8 +17,7 @@ exports.login = async (req, res) => {
     if (user && user.Id_Person && user.Password == Crypto.createHash('sha256').update(req.body.Password).digest('hex')) {
 
         // search for a session for this user
-        let session = await sessions.findByUserId(user.id)
-
+        let session = await sessions.findByUserId(user.Id_Person)
         // if there is a session, check if it's expired
         let isTokenExpired = session ? (new Date(session.validUntil) - new Date() <= 0) : true
         var token = ""
@@ -27,7 +26,7 @@ exports.login = async (req, res) => {
         // else, create a session
         if (session && !isTokenExpired) {
             console.log("use existing")
-            token = session.token 
+            token = session.token   
         } else {
             console.log("create new")
             session = await sessions.create(user.Id_Person)

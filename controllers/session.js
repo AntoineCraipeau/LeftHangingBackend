@@ -31,7 +31,7 @@ exports.create = async (id) => {
 
 // Get session by user id
 exports.findByUserId = async (id) => {
-    var condition = id ? { userId: { [Op.eq]: id } } : null;
+    var condition = id ? { Id_Person: { [Op.eq]: id } } : null;
     var result = {};
     await Session.findOne({ where: condition })
     .then(data => {
