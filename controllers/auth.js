@@ -128,7 +128,7 @@ function sendConfirmationMail(req, res){
     to: req.body.Email,
     subject: 'Confirmation of Account creation',
     text: 'Hi ' + req.body.Username +",",
-    html:'Hi '+ req.body.Username + ',' + '<br><p>Thanks again for creating an account on WordPanic.</p> <p>Follow this link to begin your WordPanic adventure!'
+    html:'Hi '+ req.body.Username + ',' + '<br><p>Thanks again for creating an account on WordPanic.</p> <p>Follow this link to begin your WordPanic adventure! :</p> <p>3.135.95.15:3001</p>'
     };
 
     // send mail with defined transport object
