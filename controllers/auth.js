@@ -100,17 +100,11 @@ exports.register = async(req, res) => {
 exports.disconnect = async (req, res) => {
     sessions.findByToken(req.get("authorization")).then((session)=>{
         if(session){
-            var date = new Date();
-            var currentDate = date.getFullYear()-1 + "-" + date.getMonth() + "-" + date.getDate();
-            var condition = {where: {token: {[Op.like]: session.token}}}
-            // Update validUntil variable to expire
-            Session.update(
-                {validUntil: currentDate},
-                condition);
+            // Delete session
+            sessions.delete(session.id);
             res.status(205);
             res.send();
         }
-        
     })
 }
 
