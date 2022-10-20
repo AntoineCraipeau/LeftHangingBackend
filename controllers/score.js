@@ -42,7 +42,7 @@ exports.findAll = (req, res) => {
 /* Send a score from the user to the database */
 exports.postScore = (req, res) => {
     var date = new Date();
-    var currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    var currentDate = date.getFullYear() + "-" + date.getMonth()+1 + "-" + date.getDate();
 
     session.findByToken(req.get("authorization")).then((session)=>{
         //If connected then
