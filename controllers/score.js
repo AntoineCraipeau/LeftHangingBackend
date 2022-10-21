@@ -43,7 +43,7 @@ exports.findAll = (req, res) => {
 exports.postScore = (req, res) => {
     var date = new Date();
     //We add 1 to the month in the following line to patch a problem where all our new scores were 1 month behind the current date.
-    var currentDate = date.getFullYear() + "-" + date.getMonth()+1 + "-" + date.getDate();
+    var currentDate = date.getFullYear() + "-" + parseInt(date.getMonth()+1) + "-" + date.getDate();
 
     session.findByToken(req.get("authorization")).then((session)=>{
         //If connected then
